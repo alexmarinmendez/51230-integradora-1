@@ -1,0 +1,26 @@
+<script>
+    function updatePokemon(name) {
+        fetch(`http://localhost:8080/pokemon/${name}`, {
+            method: 'put',
+            body: JSON.stringify({
+                name: document.getElementById('name').value,
+                photo: document.getElementById('photo').value,
+                type: document.getElementById('type').value
+            }),
+              headers:{
+                'Content-Type': 'application/json'
+            }
+        })
+        window.location.href='http://localhost:8080/pokemon'
+        
+    }
+</script>
+
+<h1>Actualiza un Pokemon!</h1>
+<hr />
+<div>
+    Name: <input type="text" id="name" name="name" value="{{pokemon.name}}"><br>
+    Photo: <input type="text" id="photo" name="photo" value="{{pokemon.photo}}"><br>
+    Type: <input type="text" id="type" name="type" value="{{pokemon.type}}"><br>
+    <button onclick="updatePokemon('{{pokemon.name}}')">Actulizar</button>
+</div>

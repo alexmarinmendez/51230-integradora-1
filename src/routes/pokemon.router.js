@@ -11,6 +11,12 @@ router.get('/', async (req, res) => {
     res.render('list', { pokemons })
 })
 
+router.get('/update/:name', async (req, res) => {
+    const name = req.params.name
+    const pokemon = await pokeModel.findOne({ name }).lean().exec()
+    res.render('update', { pokemon })
+})
+
 router.get('/create', (req, res) => {
     res.render('create', {})
 })
@@ -32,10 +38,27 @@ router.post('/', async (req, res) => {
     res.redirect(`/pokemon`)
 })
 
+router.put('/:name', async (req, res) => {
+    const name = req.params.name
+    console.log(name)
+    const pokemonNewData = req.body
+    console.log(pokemonNewData)
+    try {
+        await pokeModel.updateOne({ name }, { ...pokemonNewData })
+    } catch(err) {
+        console.log('error.....')
+        res.send({err})
+    }
+})
+
 router.delete('/:name', async (req, res) => {
     const name = req.params.name
-    await pokeModel.deleteOne({ name })
-    res.send('Pokemon borrado!')
+    try {
+        await pokeModel.deleteOne({ name })
+        res.send(`Pokemon ${name} borrado exitosamente!`)
+    } catch (err) {
+        res.send({err})
+    }
 })
 
 export default router
