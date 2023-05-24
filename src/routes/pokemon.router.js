@@ -6,9 +6,13 @@ const router = Router()
 router.get('/', async (req, res) => {
     // res.send('Listando los pokemones...')
     // const pokemons = await pokeModel.find()
-    const pokemons = await pokeModel.find().lean().exec()
-    console.log(pokemons)
-    res.render('list', { pokemons })
+    // if (req.cookies.user) {
+    if (req.session.user) {
+        const pokemons = await pokeModel.find().lean().exec()
+        console.log(pokemons)
+        return res.render('list', { pokemons })
+    }
+    return res.send('error')
 })
 
 router.get('/update/:name', async (req, res) => {
